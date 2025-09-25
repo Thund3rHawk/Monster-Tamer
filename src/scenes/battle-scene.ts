@@ -1,20 +1,10 @@
 import { Scene } from 'phaser';
 import { SCENE_KEYS } from './scene-keys';
 import { BATTLE_ASSET_KEYS, BATTLE_BACKGROUND_ASSET_KEYS, HEALTH_BAR_ASSET_KEYS, MONSTER_ASSET_KEYS } from '../assets/assets-keys';
-
-const BATTLE_MENU_OPTIONS = {
-    FIGHT: 'FIGHT',
-    SWITCH: 'SWITCH',
-    ITEM: 'ITEM',
-    FLEE: 'FLEE'
-}
-
-const battleUiTextStyle = {
-    color: 'black',
-    fontSize: '30px'
-}
+import { BattleMenu } from '../battle/ui/menu/battle-menu';
 
 export class BattleScene extends Scene {
+    battleMenu: BattleMenu;
     constructor() {
         super({
             key: SCENE_KEYS.BATTLE_SCENE
@@ -100,22 +90,10 @@ export class BattleScene extends Scene {
             }),
         ])
 
-        // crating the manu options
-        this.createMainInfoPane();
-        this.add.container(520, 448, [
-            this.createMainInfoSubPane(),
-            this.add.text(55, 22, BATTLE_MENU_OPTIONS.FIGHT, battleUiTextStyle),
-            this.add.text(240, 22, BATTLE_MENU_OPTIONS.SWITCH, battleUiTextStyle),
-            this.add.text(55, 70, BATTLE_MENU_OPTIONS.ITEM, battleUiTextStyle),
-            this.add.text(240, 70, BATTLE_MENU_OPTIONS.FLEE, battleUiTextStyle),
-        ])
-
-        this.add.container(0, 448, [
-            this.add.text (55, 22, 'slash', battleUiTextStyle),
-            this.add.text (240, 22, 'growl', battleUiTextStyle),
-            this.add.text (55, 70, '-', battleUiTextStyle),
-            this.add.text (240, 70, '-', battleUiTextStyle),
-        ])
+        // crating the menu options
+        this.battleMenu = new BattleMenu(this);
+        this.battleMenu.showMainBattleMenu();
+        // this.battleMenu.hideMainBattleMenu();
     }
 
     // custom method for creating the full healthbar 
@@ -128,19 +106,5 @@ export class BattleScene extends Scene {
         const right_cap = this.add.image(middle.x + middle.displayWidth, y, HEALTH_BAR_ASSET_KEYS.RIGHT_CAP).setOrigin(0, 0.5).setScale(1, scaleY);
 
         return this.add.container(x, y, [left_cap, middle, right_cap]);
-    }
-
-    createMainInfoPane() {
-        const padding = 4;
-        const rectangleHeight = 124
-        this.add.rectangle(padding, this.scale.height - rectangleHeight - padding, this.scale.width - padding * 2, rectangleHeight, 0xede4f3, 1).setOrigin(0).setStrokeStyle(8, 0xe4434a, 1);
-    }
-
-
-    createMainInfoSubPane() {
-        const rectangleWidth = 500;
-        const rectangleHeight = 124;
-
-        return this.add.rectangle(0, 0, rectangleWidth, rectangleHeight, 0xede4f3, 1).setOrigin(0).setStrokeStyle(8, 0x905ac2, 1)
-    }
+    }    
 }
