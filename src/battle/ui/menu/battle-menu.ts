@@ -1,88 +1,134 @@
-import { MONSTER_ASSET_KEYS } from "../../../assets/assets-keys";
+import { MONSTER_ASSET_KEYS } from '../../../assets/assets-keys';
 
 const BATTLE_MENU_OPTIONS = {
-    FIGHT: 'FIGHT',
-    SWITCH: 'SWITCH',
-    ITEM: 'ITEM',
-    FLEE: 'FLEE'
-}
+  FIGHT: 'FIGHT',
+  SWITCH: 'SWITCH',
+  ITEM: 'ITEM',
+  FLEE: 'FLEE',
+};
 
 const battleUiTextStyle = {
-    color: 'black',
-    fontSize: '30px'
-}
+  color: 'black',
+  fontSize: '30px',
+};
 
 export class BattleMenu {
-    scene: Phaser.Scene;
-    mainBattleMenuContainerGameObject: Phaser.GameObjects.Container;
-    moveSelectionSubBattleMenuPhaserContainerGameObject: Phaser.GameObjects.Container;
-    battleTextGameObjectLine1: Phaser.GameObjects.Text;
-    battleTextGameObjectLine2: Phaser.GameObjects.Text;
+  scene: Phaser.Scene;
+  mainBattleMenuContainerGameObject: Phaser.GameObjects.Container;
+  moveSelectionSubBattleMenuPhaserContainerGameObject: Phaser.GameObjects.Container;
+  battleTextGameObjectLine1: Phaser.GameObjects.Text;
+  battleTextGameObjectLine2: Phaser.GameObjects.Text;
 
+  constructor(scene: Phaser.Scene) {
+    this.scene = scene;
+    this.createMainInfoPane();
+    this.createMainBattleMenu();
+    this.createMonsterAttackSubMenu();
+  }
 
-    constructor(scene: Phaser.Scene) {
-        this.scene = scene;
-        this.createMainInfoPane();
-        this.createMainBattleMenu();
-        this.createMonsterAttackSubMenu();
-    }
+  showMonsterAttackSubMenu() {
+    this.moveSelectionSubBattleMenuPhaserContainerGameObject.setAlpha(1);
+  }
 
-    showMonsterAttackSubMenu(){
-        this.moveSelectionSubBattleMenuPhaserContainerGameObject.setAlpha(1);
-    }
+  hideMonsterAttackSubMenu() {
+    this.moveSelectionSubBattleMenuPhaserContainerGameObject.setAlpha(0);
+  }
 
-    hideMonsterAttackSubMenu(){
-        this.moveSelectionSubBattleMenuPhaserContainerGameObject.setAlpha(0);
-    }
+  showMainBattleMenu() {
+    this.mainBattleMenuContainerGameObject.setAlpha(1);
+    this.battleTextGameObjectLine1.setAlpha(1);
+    this.battleTextGameObjectLine2.setAlpha(1);
+  }
+  hideMainBattleMenu() {
+    this.mainBattleMenuContainerGameObject.setAlpha(0);
+    this.battleTextGameObjectLine1.setAlpha(0);
+    this.battleTextGameObjectLine2.setAlpha(0);
+  }
 
-    showMainBattleMenu(){
-        this.mainBattleMenuContainerGameObject.setAlpha(1)
-        this.battleTextGameObjectLine1.setAlpha(1);
-        this.battleTextGameObjectLine2.setAlpha(1);
-        
-    }
-    hideMainBattleMenu(){
-        this.mainBattleMenuContainerGameObject.setAlpha(0);
-        this.battleTextGameObjectLine1.setAlpha(0);
-        this.battleTextGameObjectLine2.setAlpha(0);
-    }
-    
-    createMainBattleMenu() {
-        this.battleTextGameObjectLine1 = this.scene.add.text(20,468, 'what should', battleUiTextStyle)
-        this.battleTextGameObjectLine2 = this.scene.add.text(20,512, `${MONSTER_ASSET_KEYS.IGUANIGNITE} do next?`, battleUiTextStyle)
+  createMainBattleMenu() {
+    this.battleTextGameObjectLine1 = this.scene.add.text(
+      20,
+      468,
+      'what should',
+      battleUiTextStyle,
+    );
+    this.battleTextGameObjectLine2 = this.scene.add.text(
+      20,
+      512,
+      `${MONSTER_ASSET_KEYS.IGUANIGNITE} do next?`,
+      battleUiTextStyle,
+    );
 
-        this.mainBattleMenuContainerGameObject = this.scene.add.container(520, 448, [
-            this.createMainInfoSubPane(),
-            this.scene.add.text(55, 22, BATTLE_MENU_OPTIONS.FIGHT, battleUiTextStyle),
-            this.scene.add.text(240, 22, BATTLE_MENU_OPTIONS.SWITCH, battleUiTextStyle),
-            this.scene.add.text(55, 70, BATTLE_MENU_OPTIONS.ITEM, battleUiTextStyle),
-            this.scene.add.text(240, 70, BATTLE_MENU_OPTIONS.FLEE, battleUiTextStyle),
-        ])
+    this.mainBattleMenuContainerGameObject = this.scene.add.container(
+      520,
+      448,
+      [
+        this.createMainInfoSubPane(),
+        this.scene.add.text(
+          55,
+          22,
+          BATTLE_MENU_OPTIONS.FIGHT,
+          battleUiTextStyle,
+        ),
+        this.scene.add.text(
+          240,
+          22,
+          BATTLE_MENU_OPTIONS.SWITCH,
+          battleUiTextStyle,
+        ),
+        this.scene.add.text(
+          55,
+          70,
+          BATTLE_MENU_OPTIONS.ITEM,
+          battleUiTextStyle,
+        ),
+        this.scene.add.text(
+          240,
+          70,
+          BATTLE_MENU_OPTIONS.FLEE,
+          battleUiTextStyle,
+        ),
+      ],
+    );
 
-        this.hideMainBattleMenu();
-    }
+    this.hideMainBattleMenu();
+  }
 
-    createMonsterAttackSubMenu() {
-        this.moveSelectionSubBattleMenuPhaserContainerGameObject = this.scene.add.container(0, 448, [
-            this.scene.add.text(55, 22, 'slash', battleUiTextStyle),
-            this.scene.add.text(240, 22, 'growl', battleUiTextStyle),
-            this.scene.add.text(55, 70, '-', battleUiTextStyle),
-            this.scene.add.text(240, 70, '-', battleUiTextStyle),
-        ])
+  createMonsterAttackSubMenu() {
+    this.moveSelectionSubBattleMenuPhaserContainerGameObject =
+      this.scene.add.container(0, 448, [
+        this.scene.add.text(55, 22, 'slash', battleUiTextStyle),
+        this.scene.add.text(240, 22, 'growl', battleUiTextStyle),
+        this.scene.add.text(55, 70, '-', battleUiTextStyle),
+        this.scene.add.text(240, 70, '-', battleUiTextStyle),
+      ]);
 
-        this.hideMonsterAttackSubMenu()
-    }
+    this.hideMonsterAttackSubMenu();
+  }
 
-    createMainInfoPane() {
-        const padding = 4;
-        const rectangleHeight = 124
-        this.scene.add.rectangle(padding, this.scene.scale.height - rectangleHeight - padding, this.scene.scale.width - padding * 2, rectangleHeight, 0xede4f3, 1).setOrigin(0).setStrokeStyle(8, 0xe4434a, 1);
-    }
+  createMainInfoPane() {
+    const padding = 4;
+    const rectangleHeight = 124;
+    this.scene.add
+      .rectangle(
+        padding,
+        this.scene.scale.height - rectangleHeight - padding,
+        this.scene.scale.width - padding * 2,
+        rectangleHeight,
+        0xede4f3,
+        1,
+      )
+      .setOrigin(0)
+      .setStrokeStyle(8, 0xe4434a, 1);
+  }
 
-    createMainInfoSubPane() {
-        const rectangleWidth = 500;
-        const rectangleHeight = 124;
+  createMainInfoSubPane() {
+    const rectangleWidth = 500;
+    const rectangleHeight = 124;
 
-        return this.scene.add.rectangle(0, 0, rectangleWidth, rectangleHeight, 0xede4f3, 1).setOrigin(0).setStrokeStyle(8, 0x905ac2, 1)
-    }
+    return this.scene.add
+      .rectangle(0, 0, rectangleWidth, rectangleHeight, 0xede4f3, 1)
+      .setOrigin(0)
+      .setStrokeStyle(8, 0x905ac2, 1);
+  }
 }

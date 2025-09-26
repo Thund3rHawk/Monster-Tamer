@@ -1,4 +1,4 @@
 export const SCENE_KEYS = {
-    PRELOAD_SCENE: 'PRELOAD_SCENE',
-    BATTLE_SCENE: 'BATTLE_SCENE',
-} as const
+  PRELOAD_SCENE: 'PRELOAD_SCENE',
+  BATTLE_SCENE: 'BATTLE_SCENE',
+} as const;
