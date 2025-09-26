@@ -7,9 +7,11 @@ import {
   MONSTER_ASSET_KEYS,
 } from '../assets/assets-keys';
 import { BattleMenu } from '../battle/ui/menu/battle-menu';
+import { DIRECTION } from '../common/direction';
 
 export class BattleScene extends Scene {
   battleMenu: BattleMenu;
+  cursorKeys?: Phaser.Types.Input.Keyboard.CursorKeys;
   constructor() {
     super({
       key: SCENE_KEYS.BATTLE_SCENE,
@@ -136,10 +138,43 @@ export class BattleScene extends Scene {
     this.battleMenu = new BattleMenu(this);
     this.battleMenu.showMainBattleMenu();
     // this.battleMenu.hideMainBattleMenu();
+
+    this.cursorKeys = this.input.keyboard?.createCursorKeys();
+  }
+
+  update() {
+    if (this.cursorKeys) {
+      const wasSpaceKeyPressed = Phaser.Input.Keyboard.JustDown(
+        this.cursorKeys.space,
+      );
+      console.log(wasSpaceKeyPressed);
+      if (wasSpaceKeyPressed) {
+        this.battleMenu.handlePlayerInput('OK');
+        return;
+      }
+      if (Phaser.Input.Keyboard.JustDown(this.cursorKeys.shift)) {
+        this.battleMenu.handlePlayerInput('CANCEL');
+      }
+
+      let selectedDirection = DIRECTION.NONE;
+      if (this.cursorKeys.up.isDown) {
+        selectedDirection = DIRECTION.UP;
+      } else if (this.cursorKeys.down.isDown) {
+        selectedDirection = DIRECTION.DOWN;
+      } else if (this.cursorKeys.left.isDown) {
+        selectedDirection = DIRECTION.LEFT;
+      } else if (this.cursorKeys.right.isDown) {
+        selectedDirection = DIRECTION.RIGHT;
+      }
+
+      if (selectedDirection !== DIRECTION.NONE) {
+        this.battleMenu.handlePlayerInput(selectedDirection);
+      }
+    }
   }
 
   // custom method for creating the full healthbar
-  crateHealthBar(x: number, y: number) {
+  crateHealthBar(x: number, y: number): Phaser.GameObjects.Container {
     const scaleY = 0.7;
 
     const left_cap = this.add

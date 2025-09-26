@@ -1,4 +1,5 @@
 import { MONSTER_ASSET_KEYS } from '../../../assets/assets-keys';
+import { HandlePlayerInputType } from '../../../types/battle-menu-types';
 
 const BATTLE_MENU_OPTIONS = {
   FIGHT: 'FIGHT',
@@ -24,6 +25,18 @@ export class BattleMenu {
     this.createMainInfoPane();
     this.createMainBattleMenu();
     this.createMonsterAttackSubMenu();
+  }
+
+  handlePlayerInput(input: HandlePlayerInputType) {
+    console.log(input);
+    if (input === 'OK') {
+      this.showMonsterAttackSubMenu();
+      this.hideMainBattleMenu();
+    }
+    if (input === 'CANCEL') {
+      this.hideMonsterAttackSubMenu();
+      this.showMainBattleMenu();
+    }
   }
 
   showMonsterAttackSubMenu() {
