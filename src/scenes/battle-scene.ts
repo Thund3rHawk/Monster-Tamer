@@ -5,13 +5,14 @@ import {
   BATTLE_BACKGROUND_ASSET_KEYS,
   HEALTH_BAR_ASSET_KEYS,
   MONSTER_ASSET_KEYS,
+  UI_ASSET_KEYS,
 } from '../assets/assets-keys';
 import { BattleMenu } from '../battle/ui/menu/battle-menu';
 import { DIRECTION } from '../common/direction';
 
 export class BattleScene extends Scene {
-  battleMenu: BattleMenu;
-  cursorKeys?: Phaser.Types.Input.Keyboard.CursorKeys;
+  #battleMenu: BattleMenu;
+  #cursorKeys?: Phaser.Types.Input.Keyboard.CursorKeys;
   constructor() {
     super({
       key: SCENE_KEYS.BATTLE_SCENE,
@@ -58,6 +59,12 @@ export class BattleScene extends Scene {
       MONSTER_ASSET_KEYS.CARNODUSK,
       `${monsterTammerAssetsPath}/monsters/carnodusk.png`,
     );
+
+    // loading cursor keys
+    this.load.image(
+      UI_ASSET_KEYS.CURSOR,
+      `${monsterTammerAssetsPath}/ui/cursor.png`,
+    );
   }
 
   create() {
@@ -86,7 +93,7 @@ export class BattleScene extends Scene {
         .image(0, 0, BATTLE_ASSET_KEYS.HEALTH_BAR_BACKGROUND)
         .setOrigin(0),
       playerMonstarName,
-      this.crateHealthBar(34, 34),
+      this.#crateHealthBar(34, 34),
       this.add.text(35 + playerMonstarName.width, 23, 'L5', {
         color: '#ed474b',
         fontSize: '28px',
@@ -122,7 +129,7 @@ export class BattleScene extends Scene {
         .setOrigin(0)
         .setScale(1, 0.8),
       enemyMonstarName,
-      this.crateHealthBar(34, 34),
+      this.#crateHealthBar(34, 34),
       this.add.text(35 + enemyMonstarName.width, 23, 'L5', {
         color: '#ed474b',
         fontSize: '28px',
@@ -135,46 +142,46 @@ export class BattleScene extends Scene {
     ]);
 
     // crating the menu options
-    this.battleMenu = new BattleMenu(this);
-    this.battleMenu.showMainBattleMenu();
+    this.#battleMenu = new BattleMenu(this);
+    this.#battleMenu.showMainBattleMenu();
     // this.battleMenu.hideMainBattleMenu();
 
-    this.cursorKeys = this.input.keyboard?.createCursorKeys();
+    this.#cursorKeys = this.input.keyboard?.createCursorKeys();
   }
 
   update() {
-    if (this.cursorKeys) {
+    if (this.#cursorKeys) {
       const wasSpaceKeyPressed = Phaser.Input.Keyboard.JustDown(
-        this.cursorKeys.space,
+        this.#cursorKeys.space,
       );
       console.log(wasSpaceKeyPressed);
       if (wasSpaceKeyPressed) {
-        this.battleMenu.handlePlayerInput('OK');
+        this.#battleMenu.handlePlayerInput('OK');
         return;
       }
-      if (Phaser.Input.Keyboard.JustDown(this.cursorKeys.shift)) {
-        this.battleMenu.handlePlayerInput('CANCEL');
+      if (Phaser.Input.Keyboard.JustDown(this.#cursorKeys.shift)) {
+        this.#battleMenu.handlePlayerInput('CANCEL');
       }
 
       let selectedDirection = DIRECTION.NONE;
-      if (this.cursorKeys.up.isDown) {
+      if (this.#cursorKeys.up.isDown) {
         selectedDirection = DIRECTION.UP;
-      } else if (this.cursorKeys.down.isDown) {
+      } else if (this.#cursorKeys.down.isDown) {
         selectedDirection = DIRECTION.DOWN;
-      } else if (this.cursorKeys.left.isDown) {
+      } else if (this.#cursorKeys.left.isDown) {
         selectedDirection = DIRECTION.LEFT;
-      } else if (this.cursorKeys.right.isDown) {
+      } else if (this.#cursorKeys.right.isDown) {
         selectedDirection = DIRECTION.RIGHT;
       }
 
       if (selectedDirection !== DIRECTION.NONE) {
-        this.battleMenu.handlePlayerInput(selectedDirection);
+        this.#battleMenu.handlePlayerInput(selectedDirection);
       }
     }
   }
 
   // custom method for creating the full healthbar
-  crateHealthBar(x: number, y: number): Phaser.GameObjects.Container {
+  #crateHealthBar(x: number, y: number): Phaser.GameObjects.Container {
     const scaleY = 0.7;
 
     const left_cap = this.add

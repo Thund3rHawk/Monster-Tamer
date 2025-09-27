@@ -4,6 +4,7 @@ import { BattleScene } from './scenes/battle-scene';
 
 const config = {
   type: Phaser.AUTO,
+  pixelArt: false,
   scale: {
     parent: 'game-container',
     width: 1024,
