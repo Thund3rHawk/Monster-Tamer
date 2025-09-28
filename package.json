@@ -4,6 +4,7 @@
   "version": "1.4.0",
   "license": "MIT",
   "scripts": {
+    "prepare": "husky",
     "dev": "node log.js dev & vite --config vite/config.dev.mjs",
     "build": "node log.js build & vite build --config vite/config.prod.mjs",
     "dev-nolog": "vite --config vite/config.dev.mjs",
@@ -15,6 +16,7 @@
     "vite": "^6.3.1"
   },
   "dependencies": {
+    "husky": "^9.1.7",
     "phaser": "^3.90.0",
     "prettier": "^3.6.2",
     "terser": "^5.39.0"
