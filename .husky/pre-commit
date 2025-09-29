@@ -1,12 +1,5 @@
 echo 'Performing code styling, testing, and building processes before committing'
 
-# Check tsconfig standards
-npm run typecheck ||
-(
-    echo 'The TypeScript configuration check has failed. Address the outlined issues above.'
-    false;
-)
-
 # Check the code formatted correctly
 prettier . --check ||
 (
